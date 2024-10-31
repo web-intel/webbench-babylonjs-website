@@ -15,7 +15,7 @@
             width: 100%;
             padding: 0;
             margin: 0;
-            background-color: #2a2342; 
+            background-color: #2a2342;
             color: #ffffff;
             font-family: "acumin-pro";
         }
@@ -120,8 +120,21 @@
     <div>
 
     <script>
+    function getParamByName(name, url) {
+        if (!url)
+            url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)', 'i');
+        let match = regex.exec(url);
+        if (!match)
+            return null;
+        if (!match[2])
+            return '';
+        return decodeURIComponent(match[2].replace(/\+/g, ' '));
+    }
+
     (async function() {
-        const maxCount = 10000;
+        const maxCount = parseInt(getParamByName('maxcount')) || 10000;
         const sceneSize = 650;
         const centerSize = 60;
 
@@ -184,7 +197,7 @@
                 const canvas = document.createElement('canvas');
                 const tempEngine = new BABYLON.Engine(canvas);
                 const tempScene = new BABYLON.Scene(tempEngine);
-    
+
                 const onLoad = () => {
                     logoDistribution.readPixels().then((pixData) => {
                         const data = {
